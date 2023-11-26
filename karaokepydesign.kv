@@ -1,0 +1,106 @@
+#:kivy 2.2.1
+# kv file (karaokepydesign.kv)
+
+WindowManager:
+    Intro_Screen:
+    Lobby_Screen:
+    Game_Screen:
+
+<Intro_Screen>:
+    name: 'Intro_Screen'
+
+    BoxLayout:
+        orientation: 'vertical'
+        Video:
+            id: intro_video
+            source: 'res/intro_video/intro_vid.mp4'
+            state: 'play'
+            size_hint: (1, 1)
+            allow_stretch: True
+            keep_ratio: False
+
+<Button>:
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 0  # Set the color with alpha as 0 (fully transparent)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<Lobby_Screen>:
+    name: 'Lobby_Screen'
+    RelativeLayout:
+        orientation: 'vertical'
+        Image: 
+            source: 'res/backgroundImage/ss_book.jpg'
+            allow_stretch: True
+            keep_ratio: False
+            size: self.size
+            pos: self.pos
+
+        Button: # PLAY BUTTON 
+            size_hint: (0.1,0.1)
+            pos_hint: {'right': 1, 'y': 0}
+            background_normal: 'res/backgroundImage/play.png' # Set the path to your image
+            background_down: '' # means that when the button is pressed, it won't visually change its appearance.
+            on_press: self.background_color = (1,1,1,0) # Set the alpha to 0 on press
+            on_release: 
+                root.check_input()
+                self.background_color = (1, 1, 1, 1)  # Set the alpha back to 1 on release. Sets the alpha value to 1, ensuring the button appears fully visible without any transparency.             
+        Button:
+            id: Exit_Lobby
+            size_hint: (0.1,0.1)
+            pos_hint: {'left': 1, 'y': 0}
+            background_normal: 'res/backgroundImage/exit.png'
+            background_down: ''
+            on_press: self.background_color = (1,1,1,0)
+            on_release: 
+                root.exit_confirmation()
+                self.background_color = (1, 1, 1, 1)  
+        TextInput:
+            id: input
+            hint_text: "Enter Song Number"
+            multiline: False
+            pos_hint: {'center_x': 0.5, 'top': 1.0}
+            size_hint: (0.5,0.05)
+            font_size: 30
+            background_color: 1,1,1,1
+            foreground_color: 0,0,0,1
+            cursor_color: 0.5, 0, 0.5, 1
+            padding: [10,10]
+
+
+<Game_Screen>:
+    name: 'Game_Screen'
+    FloatLayout:
+        orientation: 'vertical'
+        Video: 
+            id: video_attribute
+            size_hint: 1,1
+            keep_ratio: False
+            allow_stretch: True
+
+        Button:
+            id: pause_play_button
+            background_color: 1,1,1,1
+            background_normal: 'res/BackgroundImage/pause.png'  
+            size_hint: (0.1,0.1)
+            pos_hint: {'right': 1, 'y': 0}
+            on_press: 
+                self.background_normal = 'res/backgoundImage/pause.png' if self.background_normal == 'res/backgroundImage/pause.png' else 'res/backgroundImage/play.png'
+                self.background_color = (1, 1, 1, 0)  
+            on_release: 
+                root.pause_play()
+                self.background_color = (1, 1, 1, 1)  
+
+        Button:
+            id: exit_button
+            size_hint: (0.1, 0.1)
+            pos_hint: {'left': 1, 'y': 0}
+            background_normal: 'res/backgroundImage/stop_1.png' 
+            background_down: ''  
+            on_press: self.background_color = (1, 1, 1, 0)  
+            on_release: 
+                root.stop_video()
+                self.background_color = (1, 1, 1, 1) 
+      
